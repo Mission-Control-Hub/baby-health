@@ -20,6 +20,7 @@ export function Layout() {
         {loading && !data && (
           <div className="px-5 pt-6 text-sm text-muted-foreground">Carregando…</div>
         )}
+        <div className="px-5 pt-3 text-right"><button className="text-sm text-primary underline" onClick={() => navigate("/integrations")}>Integrações</button></div>
         <Outlet />
       </div>
 

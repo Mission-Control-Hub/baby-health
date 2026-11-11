@@ -11,9 +11,14 @@ client = TestClient(app)
 
 
 @pytest.fixture(autouse=True)
-def _clear_seed_cache():
+def _clear_seed_cache(tmp_path):
+    from deps import get_profile_repository
+    from repositories.json_repository import JsonRepository
+    repo = JsonRepository(tmp_path)
+    app.dependency_overrides[get_profile_repository] = lambda: repo
     clear_cache()
     yield
+    app.dependency_overrides.pop(get_profile_repository, None)
     clear_cache()
 
 
