@@ -569,3 +569,7 @@ EP-09, EP-10, EP-11
 |---------|------|--------|---------|
 | 1.0 | 2026-04-04 | Product | Initial backlog and release plan |
 
+
+## Integrações e assistentes (2026-11-11)
+
+[EP-16/EP-17: features, user stories e sequência de entrega](INTEGRATIONS_PLAN.md).

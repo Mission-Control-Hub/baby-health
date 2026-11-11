@@ -54,3 +54,6 @@ infra/**/terraform.tfvars
 
 # Misc
 *.log
+
+# Runtime integration credentials (hashes and grants)
+backend/data/integration_keys/

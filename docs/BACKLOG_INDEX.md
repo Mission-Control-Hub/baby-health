@@ -167,3 +167,7 @@
 | **P0** | 31 | MVP Core (EP-01 a EP-08, EP-12) |
 | **P1** | 15 | Post-MVP (EP-09 a EP-11 + filtro cuidadores + insights + EP-13 refatoração + EP-14 feature flags) |
 | **P2** | 2 | Futuro (curadoria externa, observações, saúde leve) |
+
+## Integrações e assistentes (2026-11-11)
+
+[EP-16/EP-17: features, user stories e sequência de entrega](INTEGRATIONS_PLAN.md).

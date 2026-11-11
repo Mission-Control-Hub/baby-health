@@ -1,0 +1,35 @@
+name: Gitflow
+on:
+  pull_request:
+    branches: [main, development]
+    types: [opened, synchronize, reopened, edited]
+jobs:
+  gitflow:
+    name: Gitflow
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate promotion source
+        env:
+          BASE: ${{ github.base_ref }}
+          HEAD: ${{ github.head_ref }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          SAME_REPO: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+        run: |
+          if [ "$BASE" = main ] && { [ "$HEAD" != development ] || [ "$SAME_REPO" != true ]; }; then
+            echo 'Only development from this repository can target main.'
+            exit 1
+          fi
+          if [ "$BASE" = development ] && [ "$HEAD" = main ]; then
+            echo 'Use feature branches based on development.'
+            exit 1
+          fi
+          if [ "$BASE" = development ]; then
+            git merge-base --is-ancestor "$BASE_SHA" "$HEAD_SHA" || {
+              echo 'Feature branch must include the current development base.'
+              exit 1
+            }
+          fi

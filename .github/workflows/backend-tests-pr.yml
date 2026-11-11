@@ -26,5 +26,5 @@ jobs:
           BABYHEALTH_USE_UI_SEED: "1"
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt pytest
+          pip install -r requirements.txt pytest httpx
           pytest tests/

@@ -23,6 +23,8 @@ import { LoginPage } from "./components/pages/LoginPage";
 import { OnboardingWizard } from "./components/onboarding/OnboardingWizard";
 import { ProtectedRoute } from "./ProtectedRoute";
 
+import { IntegrationsPage } from "./components/pages/IntegrationsPage";
+
 export const router = createBrowserRouter([
   { path: "/login", Component: LoginPage },
   { path: "/onboarding", Component: OnboardingWizard },
@@ -35,6 +37,7 @@ export const router = createBrowserRouter([
     ),
     children: [
       { index: true, Component: TodayPage },
+      { path: "integrations", Component: IntegrationsPage },
       { path: "caregivers", Component: CaregiversPage },
       { path: "routines", Component: RoutinesPage },
       { path: "my-baby", Component: MyBabyPage },

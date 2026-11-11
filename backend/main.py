@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 import os
 
 from config import settings, use_ui_seed
+from routers import integrations
 from routers import auth, babies, baby_ui_state, caregivers, events, dashboard, media, onboarding, setup, ui_data
 
 if os.getenv("FEATURE_FLAGS_ENABLED", "0").lower() in ("1", "true", "yes"):
@@ -46,6 +47,14 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+@app.middleware("http")
+async def private_integration_responses(request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith(("/api/integrations/", "/api/v1/")):
+        response.headers["Cache-Control"] = "no-store"
+    return response
+
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
@@ -57,6 +66,8 @@ app.add_middleware(
 
 # Include routers (API routes take priority; auth first — public)
 app.include_router(auth.router)
+app.include_router(integrations.router)
+app.include_router(integrations.api)
 app.include_router(onboarding.router)
 app.include_router(babies.router)
 app.include_router(caregivers.router)

@@ -19,7 +19,12 @@ def media_client(monkeypatch, tmp_path: Path) -> TestClient:
     monkeypatch.setattr(config.settings, "data_dir", tmp_path)
     from main import app
 
-    return TestClient(app)
+    from deps import get_current_user
+    from models.auth import TokenPayload
+    monkeypatch.setattr(config.settings, "storage_type", "json")
+    app.dependency_overrides[get_current_user] = lambda: TokenPayload(sub="test", username="test", profile_dir="family", caregiver_id="test")
+    yield TestClient(app)
+    app.dependency_overrides.pop(get_current_user, None)
 
 
 def test_upload_and_get_image(media_client: TestClient, tmp_path: Path):
@@ -32,7 +37,7 @@ def test_upload_and_get_image(media_client: TestClient, tmp_path: Path):
     assert "url" in data
     assert data["url"].startswith("/api/media/")
     name = data["url"].split("/")[-1]
-    img_dir = tmp_path / "images"
+    img_dir = tmp_path / "family" / "images"
     assert (img_dir / name).is_file()
 
     g = media_client.get(f"/api/media/{name}")
